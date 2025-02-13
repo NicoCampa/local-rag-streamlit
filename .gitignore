@@ -26,11 +26,17 @@ venv/
 ENV/
 
 # Project specific
-chroma/
+
+# Ignore all files inside the 'chroma' directory but not the directory itself
+chroma/*
+!chroma/
+
+# Ignore all files inside the 'data' directory but not the directory itself
+data/*
+!data/
+
 .DS_Store
 backup/
-data/*.pdf
-data/*.txt
 
 # IDE
 .idea/

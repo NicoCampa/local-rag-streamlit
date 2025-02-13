@@ -108,7 +108,3 @@ Distributed under the MIT License. See the [LICENSE](LICENSE) file for more deta
 - **Ollama:** Supplying high-quality language models and embeddings.
 
 ---
-
-## Contact
-
-For issues or inquiries, please reach out at [your-email@example.com](mailto:your-email@example.com).
