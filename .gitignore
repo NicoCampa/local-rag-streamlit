@@ -27,13 +27,17 @@ ENV/
 
 # Project specific
 
-# Ignore all files inside the 'chroma' directory but not the directory itself
+# Ignore all files inside the 'chroma' directory but not the directory itself,
+# except .gitkeep so that empty directories are tracked.
 chroma/*
 !chroma/
+!chroma/.gitkeep
 
-# Ignore all files inside the 'data' directory but not the directory itself
+# Ignore all files inside the 'data' directory but not the directory itself,
+# except .gitkeep so that empty directories are tracked.
 data/*
 !data/
+!data/.gitkeep
 
 .DS_Store
 backup/
