@@ -4,7 +4,7 @@ from populate_database import populate_db
 from datetime import datetime
 
 ##############################################################################
-# PAGE CONFIGURATION
+# PAGE CONFIGURATION STREAMLIT
 ##############################################################################
 st.set_page_config(
     page_title="AI Agent CB-DC-1",
