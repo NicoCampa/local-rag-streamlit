@@ -1,16 +1,28 @@
 import argparse
 import os
 import shutil
-from langchain.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
-from langchain.vectorstores.chroma import Chroma
-
+from langchain_community.document_loaders import PyPDFDirectoryLoader, TextLoader
+from langchain_community.vectorstores import Chroma
+from pathlib import Path
 
 CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
+def populate_db():
+    # Load the documents
+    documents = load_documents()
+    
+    # Split documents into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    splits = text_splitter.split_documents(documents)
+    
+    # Create and populate the vector store
+    embedding_function = get_embedding_function()
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    db.add_documents(splits)
 
 def main():
 
@@ -19,7 +31,7 @@ def main():
     parser.add_argument("--reset", action="store_true", help="Reset the database.")
     args = parser.parse_args()
     if args.reset:
-        print("✨ Clearing Database")
+        print("Clearing Database")
         clear_database()
 
     # Create (or update) the data store.
@@ -29,8 +41,18 @@ def main():
 
 
 def load_documents():
-    document_loader = PyPDFDirectoryLoader(DATA_PATH)
-    return document_loader.load()
+    documents = []
+    
+    # Load PDFs
+    pdf_loader = PyPDFDirectoryLoader(DATA_PATH)
+    documents.extend(pdf_loader.load())
+    
+    # Load TXT files
+    for txt_path in Path(DATA_PATH).glob("**/*.txt"):
+        loader = TextLoader(str(txt_path))
+        documents.extend(loader.load())
+    
+    return documents
 
 
 def split_documents(documents: list[Document]):
@@ -44,20 +66,20 @@ def split_documents(documents: list[Document]):
 
 
 def add_to_chroma(chunks: list[Document]):
-    # Load the existing database.
+    # Load the existing database
     db = Chroma(
         persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
     )
 
-    # Calculate Page IDs.
+    # Calculate Page IDs
     chunks_with_ids = calculate_chunk_ids(chunks)
 
-    # Add or Update the documents.
+    # Add or Update the documents
     existing_items = db.get(include=[])  # IDs are always included by default
     existing_ids = set(existing_items["ids"])
     print(f"Number of existing documents in DB: {len(existing_ids)}")
 
-    # Only add documents that don't exist in the DB.
+    # Only add documents that don't exist in the DB
     new_chunks = []
     for chunk in chunks_with_ids:
         if chunk.metadata["id"] not in existing_ids:
@@ -107,4 +129,4 @@ def clear_database():
 
 
 if __name__ == "__main__":
-    main()
+    populate_db()
