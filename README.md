@@ -1,6 +1,6 @@
-# AI Agent CB-DC-1
+# AI Agent 
 
-**AI Agent CB-DC-1** is a powerful conversational AI interface built using Streamlit, LangChain, and Chroma vector storage. It leverages retrieval augmented generation (RAG) to provide intelligent, context-aware responses to your queries.
+**AI Agent** is a powerful conversational AI interface built using Streamlit, LangChain, and Chroma vector storage. It leverages retrieval augmented generation (RAG) to provide intelligent, context-aware responses to your queries.
 
 ---
 
@@ -30,8 +30,8 @@
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your_username/ai-agent-cb-dc-1.git
-   cd ai-agent-cb-dc-1
+   git clone https://github.com/your_username/ai-agent.git
+   cd ai-agent
    ```
 
 2. **Set Up a Virtual Environment**
